@@ -22,47 +22,33 @@ yarn add umzug-mssql
 ```
 
 Usage 🚀
-In your Umzug configuration, set up the custom storage like this:
-
-```js
-const Umzug = require("umzug");
-const UmzugMssqlStorage = require("umzug-mssql");
-
-new Umzug({
-  storage: new UmzugMssqlStorage(mssqlConnectionPool),
-  logger: console,
-  migrations: {
-    glob: "*/migrations/*.js",
-  },
-});
-```
-
-Configuration Options ⚙️
-
-mssqlConnectionPool: Mssql connection pool instance
-
-Here's an example of how to use Umzug with MSSQL custom storage:
 
 ```js
 // Import necessary modules
-const Umzug = require("umzug");
-const UmzugMssqlStorage = require("umzug-mssql");
+import { Umzug } from "umzug";
+import UmzugMssql from "umzug-mssql";
+import { getPool } from "./mssql";
 
-// Create an Umzug instance
-const umzug = new Umzug({
-  storage: new UmzugMssqlStorage(mssqlConnectionPool),
-  // Other Umzug configuration options...
-});
-
-// Perform migrations
-umzug
-  .up()
-  .then((migrations) => {
-    console.log("Migrations executed:", migrations);
-  })
-  .catch((error) => {
-    console.error("Error executing migrations:", error);
+(async () => {
+  // Create instance
+  const umzug = new Umzug({
+    storage: new UmzugMssql(await getPool()),
+    logger: console,
+    migrations: {
+      glob: "*/migrations/*.js",
+    },
   });
+
+  // Perform migrations
+  umzug
+    .up()
+    .then((migrations) => {
+      console.log("Migrations executed:", migrations);
+    })
+    .catch((error) => {
+      console.error("Error executing migrations:", error);
+    });
+})();
 ```
 
 Contributing 🤝
