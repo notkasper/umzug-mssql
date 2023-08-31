@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+require("./index");
 class CustomStorage {
     constructor(pool) {
         this.ensureMigrationTableExists = () => __awaiter(this, void 0, void 0, function* () {

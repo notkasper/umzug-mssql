@@ -1,5 +1,6 @@
 import { MigrationParams, UmzugStorage, Umzug } from "umzug";
 import { ConnectionPool } from "mssql";
+import "./index";
 
 class CustomStorage implements UmzugStorage {
   pool: ConnectionPool;
