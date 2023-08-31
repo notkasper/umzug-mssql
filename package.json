@@ -1,6 +1,6 @@
 {
   "name": "umzug-mssql",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -20,5 +20,9 @@
     "@types/mssql": "^8.1.2",
     "@types/node": "^20.5.7",
     "typescript": "^5.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/notkasper/umzug-mssql"
   }
 }
