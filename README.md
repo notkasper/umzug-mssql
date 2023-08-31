@@ -14,11 +14,11 @@ A custom storage implementation for [Umzug](https://github.com/sequelize/umzug) 
 To install this custom storage, use npm or yarn:
 
 ```bash
-npm install umzug-mssql-storage
+npm install umzug-mssql
 
 # OR
 
-yarn add umzug-mssql-storage
+yarn add umzug-mssql
 ```
 
 Usage 🚀
@@ -26,7 +26,7 @@ In your Umzug configuration, set up the custom storage like this:
 
 ```js
 const Umzug = require("umzug");
-const UmzugMssqlStorage = require("umzug-mssql-storage");
+const UmzugMssqlStorage = require("umzug-mssql");
 
 new Umzug({
   storage: new UmzugMssqlStorage(mssqlConnectionPool),
@@ -46,7 +46,7 @@ Here's an example of how to use Umzug with MSSQL custom storage:
 ```js
 // Import necessary modules
 const Umzug = require("umzug");
-const UmzugMssqlStorage = require("umzug-mssql-storage");
+const UmzugMssqlStorage = require("umzug-mssql");
 
 // Create an Umzug instance
 const umzug = new Umzug({
