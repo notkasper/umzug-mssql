@@ -1,5 +1,5 @@
-import { MigrationParams, UmzugStorage, Umzug } from "umzug";
 import { ConnectionPool } from "mssql";
+import { MigrationParams, UmzugStorage } from "umzug";
 
 type Config = {
   schema: string;

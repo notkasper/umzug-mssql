@@ -1,10 +1,15 @@
-import { MigrationParams, UmzugStorage } from "umzug";
 import { ConnectionPool } from "mssql";
+import { MigrationParams, UmzugStorage } from "umzug";
+
+type Config = {
+  schema: string;
+  tableName: string;
+};
 
 declare class CustomStorage implements UmzugStorage {
   pool: ConnectionPool;
 
-  constructor(pool: ConnectionPool);
+  constructor(pool: ConnectionPool, config?: Config);
 
   ensureMigrationTableExists: () => Promise<void>;
 
