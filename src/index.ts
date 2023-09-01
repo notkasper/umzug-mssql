@@ -54,7 +54,9 @@ class CustomStorage implements UmzugStorage {
     await this.ensureMigrationTableExists();
     const result = await this.pool
       .request()
-      .query(`SELECT [name] FROM [dbo].[Migrations] ORDER BY [date]`);
+      .query(
+        `SELECT [name] FROM ${this.schema}.${this.tableName} ORDER BY [date]`
+      );
     const executed = result.recordset.map((record) => record.name);
     return executed;
   };
