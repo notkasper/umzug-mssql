@@ -12,6 +12,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 class CustomStorage {
     constructor(pool, config) {
         this.ensureMigrationTableExists = () => __awaiter(this, void 0, void 0, function* () {
+            // Create schema if it does not exist
+            yield this.pool.request().query(`
+      IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = '${this.schema}')
+      BEGIN
+          EXEC('CREATE SCHEMA ${this.schema}')
+      END
+    `);
+            // Create migrations table if it does not exist
             const query = `
     IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = '${this.tableName}')
     BEGIN

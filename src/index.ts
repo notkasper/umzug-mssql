@@ -20,6 +20,15 @@ class CustomStorage implements UmzugStorage {
   }
 
   ensureMigrationTableExists = async () => {
+    // Create schema if it does not exist
+    await this.pool.request().query(`
+      IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = '${this.schema}')
+      BEGIN
+          EXEC('CREATE SCHEMA ${this.schema}')
+      END
+    `);
+
+    // Create migrations table if it does not exist
     const query = `
     IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = '${this.tableName}')
     BEGIN
