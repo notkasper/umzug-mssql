@@ -37,7 +37,9 @@ class CustomStorage implements UmzugStorage {
     await this.pool
       .request()
       .input("name", params.name)
-      .query(`INSERT INTO [dbo].[Migrations] (name) VALUES (@name)`);
+      .query(
+        `INSERT INTO ${this.schema}.${this.tableName} (name) VALUES (@name)`
+      );
   };
 
   unlogMigration = async (params: MigrationParams<unknown>) => {

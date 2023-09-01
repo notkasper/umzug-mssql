@@ -28,7 +28,7 @@ class CustomStorage {
             yield this.pool
                 .request()
                 .input("name", params.name)
-                .query(`INSERT INTO [dbo].[Migrations] (name) VALUES (@name)`);
+                .query(`INSERT INTO ${this.schema}.${this.tableName} (name) VALUES (@name)`);
         });
         this.unlogMigration = (params) => __awaiter(this, void 0, void 0, function* () {
             yield this.ensureMigrationTableExists();
