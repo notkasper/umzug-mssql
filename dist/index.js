@@ -9,20 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-require("./index");
 class CustomStorage {
-    constructor(pool) {
+    constructor(pool, config) {
         this.ensureMigrationTableExists = () => __awaiter(this, void 0, void 0, function* () {
             const query = `
-    IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Migrations')
+    IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = '${this.tableName}')
     BEGIN
-        CREATE TABLE Migrations (
+        CREATE TABLE ${this.tableName} (
             name NVARCHAR(255) NOT NULL,
             date DATETIME NOT NULL DEFAULT GETDATE()
         );
     END
     `;
-            yield this.pool.request().query(query);
+            yield this.pool.request().input("tableName", this.tableName).query(query);
         });
         this.logMigration = (params) => __awaiter(this, void 0, void 0, function* () {
             yield this.ensureMigrationTableExists();
@@ -36,7 +35,7 @@ class CustomStorage {
             yield this.pool
                 .request()
                 .input("name", params.name)
-                .query(`DELETE FROM [dbo].[Migrations] WHERE [name]=@name`);
+                .query(`DELETE FROM ${this.schema}.${this.tableName} WHERE [name]=@name`);
         });
         this.executed = (meta) => __awaiter(this, void 0, void 0, function* () {
             yield this.ensureMigrationTableExists();
@@ -47,6 +46,9 @@ class CustomStorage {
             return executed;
         });
         this.pool = pool;
+        // Set defaults and override with provided config
+        this.schema = (config === null || config === void 0 ? void 0 : config.schema) || "dbo";
+        this.tableName = (config === null || config === void 0 ? void 0 : config.tableName) || "Migrations";
     }
 }
 exports.default = CustomStorage;

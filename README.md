@@ -31,8 +31,14 @@ import { getPool } from "./mssql";
 
 (async () => {
   // Create instance
+
+  const options = {
+    // Optional config object
+    schema: "dbo",
+    tableName: "Migrations",
+  };
   const umzug = new Umzug({
-    storage: new UmzugMssql(await getPool()),
+    storage: new UmzugMssql(await getPool(), options),
     logger: console,
     migrations: {
       glob: "*/migrations/*.js",
