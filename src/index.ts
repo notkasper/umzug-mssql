@@ -1,25 +1,35 @@
 import { MigrationParams, UmzugStorage, Umzug } from "umzug";
 import { ConnectionPool } from "mssql";
-import "./index";
+
+type Config = {
+  schema: string;
+  tableName: string;
+};
 
 class CustomStorage implements UmzugStorage {
   pool: ConnectionPool;
+  schema: string;
+  tableName: string;
 
-  constructor(pool: ConnectionPool) {
+  constructor(pool: ConnectionPool, config?: Config) {
     this.pool = pool;
+
+    // Set defaults and override with provided config
+    this.schema = config?.schema || "dbo";
+    this.tableName = config?.tableName || "Migrations";
   }
 
   ensureMigrationTableExists = async () => {
     const query = `
-    IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Migrations')
+    IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = '${this.tableName}')
     BEGIN
-        CREATE TABLE Migrations (
+        CREATE TABLE ${this.tableName} (
             name NVARCHAR(255) NOT NULL,
             date DATETIME NOT NULL DEFAULT GETDATE()
         );
     END
     `;
-    await this.pool.request().query(query);
+    await this.pool.request().input("tableName", this.tableName).query(query);
   };
 
   logMigration = async (params: MigrationParams<unknown>) => {
@@ -35,7 +45,7 @@ class CustomStorage implements UmzugStorage {
     await this.pool
       .request()
       .input("name", params.name)
-      .query(`DELETE FROM [dbo].[Migrations] WHERE [name]=@name`);
+      .query(`DELETE FROM ${this.schema}.${this.tableName} WHERE [name]=@name`);
   };
 
   executed = async (meta: Pick<MigrationParams<unknown>, "context">) => {
