@@ -15,7 +15,7 @@ class CustomStorage {
             const query = `
     IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = '${this.tableName}')
     BEGIN
-        CREATE TABLE ${this.tableName} (
+        CREATE TABLE ${this.schema}.${this.tableName} (
             name NVARCHAR(255) NOT NULL,
             date DATETIME NOT NULL DEFAULT GETDATE()
         );
