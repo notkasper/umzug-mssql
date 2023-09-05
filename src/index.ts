@@ -6,6 +6,8 @@ type Config = {
   tableName: string;
 };
 
+console.log("myrthedingle");
+
 class CustomStorage implements UmzugStorage {
   pool: ConnectionPool;
   schema: string;
