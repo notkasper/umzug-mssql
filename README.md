@@ -41,7 +41,7 @@ import { getPool } from "./mssql";
     storage: new UmzugMssql(await getPool(), options),
     logger: console,
     migrations: {
-      glob: "*/migrations/*.js",
+      glob: "**/migrations/*.js",
     },
   });
 
